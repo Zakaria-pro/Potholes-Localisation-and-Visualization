@@ -52,4 +52,4 @@ we can break the system into 5 componenets :
 - NodeJS
 - NeDB
 - Glitch
-- Mapbox
+- Leaflet
