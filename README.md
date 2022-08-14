@@ -17,7 +17,7 @@ we can break the system into 5 main componenets :
 ## Data Storage & Retrieving 
 * NoSQL DataBase: MongoDB
 
-## Data Sending & Receiving
+## Data Sending & Receiving (Map)
 * Socket.io + NodeJs
 * Socket.io & JavaScript & Mapbox 
 
@@ -29,19 +29,18 @@ we can break the system into 5 main componenets :
 
 
 # Used Technologies
-...
-
-Frontend:
-* JavaScript
-* Glitch
-* Mapbox
 
 ## hardware : 
-* 
 * Raspberry pi 4
 * Modem 4G Orange (huawei E3372h-153)
 * Camera PI
 * GPS b220
 * PowerBank
+
 ## software :
+* Python
+* NodeJS
+* MongoDB
+* Glitch
+* Mapbox
 
