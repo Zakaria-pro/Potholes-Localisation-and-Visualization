@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  /* ease | ease-in | ease-out | linear */
+  transition: transform ease-in-out 0.3s;
+  display: block;
+}
+
+#myImg:hover {
+  transform: scale(4);
+}
