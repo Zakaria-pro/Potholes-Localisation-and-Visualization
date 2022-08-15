@@ -1,6 +1,6 @@
 # SafeRoad
 
-an IoT Systems that allows detection and localisation of potholes to monitor the quality of roads.
+an IoT Systems that allows localisation and visualization of potholes to monitor the quality of roads.
 
 ![Web Application](./assets/amsa6-pothole-detection.jpg)
 
