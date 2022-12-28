@@ -14,16 +14,16 @@ we can break the system into 5 componenets :
 - Smart things: Camera + GPS
 - Processing Unit: RaspberyPI
 
-## Data Sending & Receiving
+## Data Sending & Receiving : POST
 
 - Network: Huawei 4G Dongle (E3372h-153) linked to Raspbery
 - Backend: NodeJS & ExpressJS & HTTPS
 
 ## Data Storage & Retrieving
 
-- NeDB
+- Mongodb
 
-## Data Sending & Receiving (Map)
+## Data Sending & Receiving (Map) : GET
 
 - NodeJs
 - JavaScript
@@ -50,6 +50,6 @@ we can break the system into 5 componenets :
 
 - Python
 - NodeJS
-- NeDB
+- Mongodb
 - Glitch
 - Leaflet
