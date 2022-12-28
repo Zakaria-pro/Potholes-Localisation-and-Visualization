@@ -3,6 +3,10 @@ const express = require("express");
 const path = require("path");
 const Datastore = require("nedb");
 const bodyParser = require("body-parser");
+const { MongoClient } = require("mongodb");
+
+const uri =
+  "mongodb+srv://zedDB:dAQZaszOuSSmsW0D@cluster0.dh0zyjw.mongodb.net/?retryWrites=true&w=majority";
 
 /*********   Global variables   **********/
 
@@ -22,15 +26,34 @@ var lastPosPothole = { latitude: "", longitude: "", image: "" };
 
 /*********   Start server   **********/
 
+const cors = require("cors");
 const app = express();
+app.use(cors());
 const PORT = 3000;
 app.use(bodyParser.json({ limit: "5mb" }));
-app.listen(PORT, () => console.log("Server is running!!"));
 
-/*********   Serving HTML page to client    **********/
+const client = new MongoClient(uri);
 
-app.get("/", function (req, res) {
-  res.status(200).sendFile(path.join(__dirname, "map.html"));
+/*****   Start MongoDB & NodeJS Server  *****/
+
+async function startServers() {
+  database = client.db("PotholesDB");
+  potholesCollection = database.collection("potholesdb");
+  console.log(database.databaseName, "is running ..");
+  app.listen(PORT, () => console.log("Server is running on localhost:3000"));
+}
+startServers().catch(console.dir);
+
+/*********   Getting Potholes positions    **********/
+
+app.get("/", async (req, res) => {
+  // res.status(200).sendFile(path.join(__dirname, "./../Frontend/map.html"));
+  try {
+    const data = await potholesCollection.findOne();
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send("error : ", error);
+  }
 });
 
 // POST
@@ -38,91 +61,22 @@ app.get("/", function (req, res) {
 /*********   Adding Pothole    **********/
 app.post("/addPosPothole", function (req, res) {
   var newPosPothole = req.body;
-  //console.log(newPosPothole.latitude)
-  console.log("pos added");
+  console.log(newPosPothole);
   // Verify the validity of data
-  if (
-    "latitude" in newPosPothole &&
-    "longitude" in newPosPothole &&
-    "image" in newPosPothole
-  ) {
-    if (newPosPothole.latitude != "" || newPosPothole.longitude != "") {
-      // insert data to database
-      addNewPosPothole(newPosPothole);
-    }
+
+  if (newPosPothole.latitude != "" || newPosPothole.longitude != "") {
+    addNewPosPothole(newPosPothole);
   }
+
   res.end();
 });
 
 /*********   Adding New Pothole position    **********/
 function addNewPosPothole(posPothole) {
   const currentDate = new Date().valueOf();
-  var insertedData = { date: currentDate, ...posPothole };
-
-  // if data contain image, it will be added to requests with images
-  if (posPothole.image !== "") {
-    console.log("insertion with image");
-
-    db.insert(insertedData, function (err, doc) {
-      if (err) throw err;
-    });
-  }
-
-  console.log("inserted", insertedData.latitude, insertedData.longitude);
-
-  // add received data, after erasing the whole database
-  lastDataDB.remove({}, { multi: true }, function (err, numDeleted) {
-    lastDataDB.loadDatabase(function (err) {});
-  });
-
-  lastDataDB.insert(insertedData, function (err, doc) {
-    //console.log(insertedData)
-    if (err) throw err;
-  });
+  var posDocument = { date: currentDate, ...posPothole };
+  potholesCollection.insertOne(posDocument);
 }
 
-// GET
-
 /*********   Getting Last Pothole position    **********/
-app.get("/getLastPosPothole", function (req, res) {
-  lastDataDB
-    .find({})
-    .sort({ date: -1 })
-    .limit(1)
-    .exec((err, results) => {
-      if (err) console.log(err);
-
-      if (results[0] != undefined) {
-        /*if (
-        lastPosPothole.latitude != results[0].latitude ||
-        lastPosPothole.longitude != results[0].longitude
-      ) {*/
-        //console.log(lastPosPothole.latitude, lastPosPothole.longitude);
-        lastPosPothole = results[0];
-
-        console.log(
-          "requested",
-          lastPosPothole.latitude,
-          lastPosPothole.longitude
-        );
-
-        res.json(lastPosPothole);
-
-        return;
-        //}
-      }
-
-      res.json({});
-    });
-});
-
-/*********   Getting Potholes positions    **********/
-app.get("/getInit", function (req, res) {
-  //res.json(lastPosPothole);
-
-  db.find({}, function (err, results) {
-    if (err) console.log(err);
-    console.log(results);
-    res.json(results);
-  });
-});
+app.get("/getLastPosPothole", function (req, res) {});

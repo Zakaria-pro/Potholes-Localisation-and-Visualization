@@ -2,7 +2,7 @@ const apiKey =
   "pk.eyJ1IjoiYmVuZXR0YWxlYiIsImEiOiJja2w3NWV1dnMyZXp4MnZsYjB1ZW9qcDVjIn0.fSUhZIwlPmxnd95ioh7e-Q";
 
 // Map Creation
-const map = L.map("map").setView([40.770116, -73.967909], 13);
+const map = L.map("map").setView(L.latLng(31.7917, 7.0926), 8);
 
 L.tileLayer(
   "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
@@ -28,57 +28,29 @@ var orangeIcon = new L.Icon({
 
 const marker = L.marker([0, 0], [0.001, 0.0001]).addTo(map);
 
-/*********   First Initialisation get All saved data   **********/
-
-/*async function getInit() {
-const response = await fetch("/getInit");
-if (response) {
-  try {
-    const data = await response.json();
-
-    if ("latitude" in data && "longitude" in data && "image" in data) {
-      const latitude = data.latitude;
-      const longitude = data.longitude;
-
-      const image = new Image();
-      image.src = "data:image/png;base64," + data.image;
-
-      let template =
-        `
-            <h3>Pothole Image</h3>
-            <div style="text-align:center">
-                <img id = "myImg" width="150" height="150" src="` +
-        image.src +
-        `"/>
-            </div>
-            `;
-
-      marker.bindPopup(template);
-
-      marker.setLatLng([latitude, longitude]);
-      map.setView([latitude, longitude], 16);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-}
-
-getInit();*/
-
 /*********   Requesting last position   **********/
 
 // variable to store last valid response
 var lastPos = { latitude: "", longitude: "" };
 
 // set the location of the marker to the new valid position obtained
-async function getCurrLoc() {
-  const response = await fetch("/getLastPosPothole");
-  if (response) {
-    try {
-      const data = await response.json();
+async function init() {
+  fetch("http://localhost:3000/", { method: "GET" })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("data coming from the node server : ", data);
+      const { latitude, longitude, image } = data;
+      if (image === "") {
+        console.log("gps data without image:", latitude, longitude);
+        marker.setLatLng([latitude, longitude]);
+        map.setView([latitude, longitude], 20);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+init();
 
-      if ("latitude" in data && "longitude" in data && "image" in data) {
+/* if ("latitude" in data && "longitude" in data && "image" in data) {
         const latitude = data.longitude;
         const longitude = data.latitude;
 
@@ -119,10 +91,4 @@ async function getCurrLoc() {
             //map.setView([latitude, longitude], 12);
           }
         }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
-setInterval(getCurrLoc, 2000);
+      } */
