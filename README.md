@@ -11,26 +11,22 @@ we can break the system into 5 componenets :
 
 ## Data Generation
 
-- Smart things: Camera + GPS
-- Processing Unit: RaspberyPI
+- Smart things: Raspberry Pi 4 + Camera + GPS + Huawei 4G Dongle (E3372h-153)
+- **pynmea2** library used for parsing GPS data
+- **requests** library used to send post request to the server
 
-## Data Sending & Receiving : POST
+## Server
 
-- Network: Huawei 4G Dongle (E3372h-153) linked to Raspbery
-- Backend: NodeJS & ExpressJS & HTTPS
-
-## Data Storage & Retrieving
-
+- NodeJS ExpressJS
 - Mongodb
+- 🚧 Change Streams (Web Sockets) 
 
-## Data Sending & Receiving (Map) : GET
-
-- NodeJs
-- JavaScript
 
 ## Data Map Ploting
 
+- Fetch API
 - Leaflet
+- 🚧 WebSocket to have a realtime communication with the server (each time a new pothole is sent to the backend)
 
 # Demonstration Video
 
@@ -38,7 +34,7 @@ we can break the system into 5 componenets :
 
 # Used Technologies
 
-## hardware :
+### hardware :
 
 - Raspberry pi 4
 - Modem 4G Orange (huawei E3372h-153)
@@ -46,10 +42,10 @@ we can break the system into 5 componenets :
 - GPS b220
 - PowerBank
 
-## software :
+### software :
 
 - Python
 - NodeJS
 - Mongodb
-- Glitch
 - Leaflet
+- 🚧 Socket.io
